@@ -24,11 +24,26 @@ namespace WordFrequencyAnalyzer
     public MainWindow()
     {
       InitializeComponent();
+
+      loadSettings();
     }
 
     private void btnAnalyze_Click(object sender, RoutedEventArgs e)
     {
       analyze();
+    }
+
+    private void loadSettings()
+    {
+      txtFileName.Text = Properties.Settings.Default.InputFile;
+      txtKnownWords.Text = Properties.Settings.Default.KnownWords;
+    }
+
+    private void saveSettings(FileInfo inputFile, FileInfo knownWordsFile)
+    {
+      Properties.Settings.Default.InputFile = inputFile.FullName;
+      Properties.Settings.Default.KnownWords = knownWordsFile?.FullName ?? "";
+      Properties.Settings.Default.Save();
     }
 
     private void analyze()
@@ -45,11 +60,12 @@ namespace WordFrequencyAnalyzer
 
       // Read the known words
       HashSet<string> knownWords = new HashSet<string>();
+      FileInfo knownWordsFileInfo = null;
 
       if (!string.IsNullOrEmpty(txtKnownWords.Text))
       {
         // Verify the known words file exists
-        var knownWordsFileInfo = new FileInfo(txtKnownWords.Text);
+        knownWordsFileInfo = new FileInfo(txtKnownWords.Text);
         if (!knownWordsFileInfo.Exists)
         {
           MessageBox.Show("Known Words File does not exist.");
@@ -62,7 +78,9 @@ namespace WordFrequencyAnalyzer
           knownWords = knownWordsReader.ReadKnownWords(fs);
         }
       }
-      
+
+      saveSettings(inputFileInfo, knownWordsFileInfo);
+
       // Read the text
       Dictionary<string, WordInfo> results;
       using (var fs = inputFileInfo.OpenRead())
