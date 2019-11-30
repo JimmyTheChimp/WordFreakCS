@@ -105,10 +105,12 @@ namespace WordFrequencyAnalyzer
       string newWord = word;
 
       newWord = rule(patternINCE, wordDict, newWord);
+      newWord = rule(patternEBIL, wordDict, newWord);
       newWord = rule(patternECEK, wordDict, newWord);
       newWord = rule(patternDIK, wordDict, newWord);
-      newWord = rule(patternMAK, wordDict, newWord);
       newWord = rule(patternLER, wordDict, newWord);
+      newWord = rule(patternGENIS, wordDict, newWord);
+      newWord = rule(patternMAK, wordDict, newWord);
       newWord = rule(patternMIS, wordDict, newWord);
       newWord = rule(patternDI, wordDict, newWord);
       newWord = rule(patternIYOR, wordDict, newWord);
@@ -150,7 +152,7 @@ namespace WordFrequencyAnalyzer
     internal static Regex patternE = new Regex(@"(..+?i)ne$|(..+?ı)na|(.+?[^c])y?[ea]$");
     internal static Regex patternDEN = new Regex(@"(..+?)[yn]?[td][ea]n$");
     internal static Regex patternDE = new Regex(@"(..+?)[yn]?[td][ea]$");
-    internal static Regex patternLER = new Regex(@"(..+?)l[ea]r$");
+    internal static Regex patternLER = new Regex(@"(..+?)ler(ce)?|lar(ca)?$");
 
     internal static Regex patternKI = new Regex(@"(..+?)ki$");
     internal static Regex patternIKEN = new Regex(@"(..+?)[y]?ken$");
@@ -162,11 +164,15 @@ namespace WordFrequencyAnalyzer
     internal static Regex patternEN = new Regex(@"(..+?)y?[ea]n$");
 
     internal static Regex patternECEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|acak(sın(ız)?)?|eceğim(iz)?|acağım(ız)?)$");
+    internal static Regex patternEBIL = new Regex(@"(..+?)y?[ea]bil$");
     internal static Regex patternMIS = new Regex(@"(..+?)m[iıuü]ş([iıuü]m|s[iıuü]n|siniz|sınız|sunuz|sünüz|[iıuü]z)?$");
     internal static Regex patternDI = new Regex(@"(..+?)([dt][iıuü][mnk]?|[dt]iniz|[dt]ınız|[dt]unuz|[dt]ünüz)$");
     internal static Regex patternIYOR = new Regex(@"(..+?)m?[iüıu]yor$");
     internal static Regex patternDIK = new Regex(@"(..+?)[dt](iği[mn]?|ığı[mn]?|üğü[mn]?|uğu[mn]?|iği[mn]iz|ığı[mn]ız|üğü[mn]üz|uğu[mn]uz)$");
     internal static Regex patternIP = new Regex(@"(..+?)[iıuü]p$");
+
+    internal static Regex patternGENIS = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|ar(ı[mz]|lar|sın(ız)?)?|mez((sin(iz)?)|ler)?|mem(iz)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
+    //internal static Regex patternGENIS = new Regex(@"(..+?)(mez|maz)$");
 
     internal static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
     internal const string replaceG = "k";
