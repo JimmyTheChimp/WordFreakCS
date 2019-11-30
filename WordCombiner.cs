@@ -13,9 +13,7 @@ namespace WordFrequencyAnalyzer
     private static char[] BACK_VOWELS = { 'a', 'ı', 'u', 'o' };
 
 
-    // TODO: Possessive endings
-    // TODO: Geniş zaman
-    // TODO: Gelecek zaman
+
 
     public Dictionary<string, WordInfo> Combine(HashSet<string> knownWords, Dictionary<string, WordInfo> wordDict)
     {
@@ -32,103 +30,143 @@ namespace WordFrequencyAnalyzer
       {
         lastCount = wordDict.Count;
 
-        runRules(wordDict, firstRun);
+        runRulesAll(wordDict, firstRun);
         firstRun = false;
       } while (wordDict.Count < lastCount);
 
       return wordDict;
     }
 
-    private void runRules(Dictionary<string, WordInfo> wordDict, bool firstRun)
+
+    private void runRulesAll(Dictionary<string, WordInfo> wordDict, bool firstRun)
     {
       var words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternINCE, wordDict, w); });
+      words.ForEach(w => runRulesSingle(wordDict, w));
+    }
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternMAK, wordDict, w); });
+    internal string runRulesSingle(Dictionary<string, WordInfo> wordDict, string word)
+    {
+      if (!wordDict.ContainsKey(word))
+        return word;
 
-      if (firstRun)
+      var firstRulesWord = runFirstRules(wordDict, word);
+
+      int lastLength;
+      var repeatRulesWord = firstRulesWord;
+      do
       {
-        words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-        words.ForEach(w => { rule(patternDEN, wordDict, w); });
-        //// döngü
-        //for (int x = 0; x < words.Count; x++)
-        //{
-        //  rule(patternDEN, wordDict, wordDict[x]));
-        //}
+        lastLength = repeatRulesWord.Length;
 
-        words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-        words.ForEach(w => { rule(patternDE, wordDict, w); });
+        repeatRulesWord = runRepeatableRules(wordDict, repeatRulesWord);
 
-        words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-        words.ForEach(w => { rule(patternILE, wordDict, w); });
+      } while (repeatRulesWord.Length < lastLength);
 
-        words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-        words.ForEach(w => { rule(patternE, wordDict, w); });
+      var lastRulesWord = runLastRules(wordDict, repeatRulesWord);
 
-        words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-        words.ForEach(w => { rule(patternEREK, wordDict, w); });
-      }
+      return lastRulesWord;
+    }
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternLER, wordDict, w); });
+    private string runFirstRules(Dictionary<string, WordInfo> wordDict, string word)
+    {
+      string newWord = word;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternMIS, wordDict, w); });
+      newWord = rule(patternINCE, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternDI, wordDict, w); });
+      newWord = rule(patternDEN, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternIYOR, wordDict, w); });
+      newWord = rule(patternDE, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternKI, wordDict, w); });
+      newWord = rule(patternILE, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternIKEN, wordDict, w); });
+      newWord = rule(patternE, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternIN, wordDict, w); });
+      newWord = rule(patternIP, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternI, wordDict, w); });
+      newWord = rule(patternEREK, wordDict, newWord);
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { rule(patternEN, wordDict, w); });
+      return newWord;
+    }
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { replaceRule(patternReplaceG, replaceG, wordDict, w); });
+    private string runRepeatableRules(Dictionary<string, WordInfo> wordDict, string word)
+    {
+      string newWord = word;
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { replaceRule(patternReplaceB, replaceB, wordDict, w); });
+      newWord = rule(patternINCE, wordDict, newWord);
+      newWord = rule(patternECEK, wordDict, newWord);
+      newWord = rule(patternDIK, wordDict, newWord);
+      newWord = rule(patternMAK, wordDict, newWord);
+      newWord = rule(patternLER, wordDict, newWord);
+      newWord = rule(patternMIS, wordDict, newWord);
+      newWord = rule(patternDI, wordDict, newWord);
+      newWord = rule(patternIYOR, wordDict, newWord);
+      newWord = rule(patternKI, wordDict, newWord);
+      newWord = rule(patternIKEN, wordDict, newWord);
+      newWord = rule(patternIN, wordDict, newWord);
+      newWord = rule(patternI, wordDict, newWord);
+      newWord = rule(patternEN, wordDict, newWord);
 
-      words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
-      words.ForEach(w => { replaceRule(patternReplaceC, replaceC, wordDict, w); });
+      return newWord;
+    }
+
+    private string runLastRules(Dictionary<string, WordInfo> wordDict, string word)
+    {
+      var newWord = word;
+
+      newWord = replaceRule(patternReplaceG, replaceG, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
+
+      newWord = replaceRule(patternReplaceB, replaceB, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
+
+      newWord = replaceRule(patternReplaceC, replaceC, wordDict, newWord);
+      if (newWord != word)
+        return newWord;
+
+      newWord = replaceRule(patternReplaceD, replaceD, wordDict, newWord);
+
+      return newWord;
+
     }
 
     internal static Regex patternMAK = new Regex(@"(..+?)m[ae]k?$");
 
-    internal static Regex patternI = new Regex(@"(..+?[^dt])[yns]?[iıuü]$");
-    internal static Regex patternE = new Regex(@"(..+?)[yn]?[ea]$");
+    //internal static Regex patternI = new Regex(@"(.+?[^dtkl])[yns]?[iıuü]$");
+    internal static Regex patternI = new Regex(@"(.+?[^dtkl])[ys]?[iıuü]$");
+    internal static Regex patternE = new Regex(@"(..+?i)ne$|(..+?ı)na|(.+?[^c])y?[ea]$");
     internal static Regex patternDEN = new Regex(@"(..+?)[yn]?[td][ea]n$");
     internal static Regex patternDE = new Regex(@"(..+?)[yn]?[td][ea]$");
-    internal static Regex patternLER = new Regex(@"(..+?)[yn]?l[ea]r$");
+    internal static Regex patternLER = new Regex(@"(..+?)l[ea]r$");
 
     internal static Regex patternKI = new Regex(@"(..+?)ki$");
     internal static Regex patternIKEN = new Regex(@"(..+?)[y]?ken$");
-    internal static Regex patternINCE = new Regex(@"(..+?)([eiöü]nc[e])|([aiou]nc[a])$");
+    internal static Regex patternINCE = new Regex(@"(..+?)([eiöü]nc[e])|([aıou]nc[a])$");
     internal static Regex patternIN = new Regex(@"(..+?)[n]?[iıüu]n$");
 
-    internal static Regex patternEREK = new Regex(@"(..+?)arak|erek$");
+    internal static Regex patternEREK = new Regex(@"(..+?)y?arak|erek$");
     internal static Regex patternILE = new Regex(@"(..+?)y?l[ea]$");
     internal static Regex patternEN = new Regex(@"(..+?)y?[ea]n$");
 
+    internal static Regex patternECEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|acak(sın(ız)?)?|eceğim(iz)?|acağım(ız)?)$");
     internal static Regex patternMIS = new Regex(@"(..+?)m[iıuü]ş([iıuü]m|s[iıuü]n|siniz|sınız|sunuz|sünüz|[iıuü]z)?$");
     internal static Regex patternDI = new Regex(@"(..+?)([dt][iıuü][mnk]?|[dt]iniz|[dt]ınız|[dt]unuz|[dt]ünüz)$");
     internal static Regex patternIYOR = new Regex(@"(..+?)m?[iüıu]yor$");
+    internal static Regex patternDIK = new Regex(@"(..+?)[dt](iği[mn]?|ığı[mn]?|üğü[mn]?|uğu[mn]?|iği[mn]iz|ığı[mn]ız|üğü[mn]üz|uğu[mn]uz)$");
+    internal static Regex patternIP = new Regex(@"(..+?)[iıuü]p$");
 
     internal static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
     internal const string replaceG = "k";
@@ -139,8 +177,10 @@ namespace WordFrequencyAnalyzer
     internal static Regex patternReplaceC = new Regex(@"(..+?)c$");
     internal const string replaceC = "ç";
 
+    internal static Regex patternReplaceD = new Regex(@"()..+?d$");
+    internal static string replaceD = "t";
 
-    private void rule(Regex pattern, Dictionary<string, WordInfo> wordDict, string word)
+    private string rule(Regex pattern, Dictionary<string, WordInfo> wordDict, string word)
     {
       if (matchesRule(pattern, word))
       {
@@ -152,7 +192,10 @@ namespace WordFrequencyAnalyzer
         }
 
         combineWord(wordDict, word, baseWord);
+        return baseWord;
       }
+
+      return word;
     }
 
     internal bool matchesRule(Regex pattern, string word)
@@ -165,7 +208,7 @@ namespace WordFrequencyAnalyzer
       return pattern.Match(word).Groups[1].ToString();
     }
 
-    private void replaceRule(Regex pattern, string replacement, Dictionary<string, WordInfo> wordDict, string word)
+    private string replaceRule(Regex pattern, string replacement, Dictionary<string, WordInfo> wordDict, string word)
     {
       if (matchesRule(pattern, word))
       {
@@ -177,7 +220,11 @@ namespace WordFrequencyAnalyzer
         }
 
         combineWord(wordDict, word, baseWord);
+
+        return baseWord;
       }
+
+      return word;
     }
 
     internal string baseReplaceRule(Regex pattern, string replacement, string word)
@@ -322,15 +369,36 @@ namespace WordFrequencyAnalyzer
     private void combineWord(Dictionary<string, WordInfo> wordDict, string from, string to)
     {
       var fromInfo = wordDict[from];
+      var toInfo = wordDict[to];
 
-      wordDict[to].Count += fromInfo.Count;
-      wordDict[to].OtherForms.Details.Add(new OtherForm() { Form = from, Breadcrumbs = $"{from}>{to}" });
+      toInfo.Count += fromInfo.Count;
 
-      wordDict[from].OtherForms.Details.ToList().ForEach(o =>
+
+      if (!toInfo.OtherForms.Details.Any(d => (d as OtherForm).Form == from))
       {
-        ((OtherForm)o).Breadcrumbs += ">" + to;
-        wordDict[to].OtherForms.Details.Add(o);
-        wordDict[from].Examples.Details.ToList().ForEach(ex => wordDict[to].Examples.Details.Add(ex));
+        toInfo.OtherForms.Details.Add(new OtherForm() { Form = from, Breadcrumbs = $"{from}>{to}" });
+      }
+
+      fromInfo.OtherForms.Details.ToList().ForEach(o =>
+      {
+        var otherForm = (OtherForm)o;
+        otherForm.Breadcrumbs += ">" + to;
+
+        if (toInfo.OtherForms.Details.Any(d => (d as OtherForm).Form == otherForm.Form))
+        {
+          var toForm = (OtherForm)toInfo.OtherForms.Details.First(d => (d as OtherForm).Form == otherForm.Form);
+          toForm.Breadcrumbs = otherForm.Breadcrumbs + ">" + toForm.Breadcrumbs;
+        }
+        else
+        {
+          toInfo.OtherForms.Details.Add(o);
+        }
+      });
+
+      fromInfo.Examples.Details.ToList().ForEach(ex =>
+      {
+        if (!toInfo.Examples.Details.Any(e => (e as Example).LineNo == (ex as Example).LineNo))
+          toInfo.Examples.Details.Add(ex);
       });
 
       wordDict.Remove(from);

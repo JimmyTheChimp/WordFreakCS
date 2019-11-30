@@ -20,15 +20,27 @@ namespace WordFrequencyAnalyzer
 
       var sr = new StreamReader(fs);
 
-      int max = int.MaxValue; //100;
       int lineNo = 0;
-      while (!sr.EndOfStream && lineNo < max)
+      string sentence = "";
+      while (!sr.EndOfStream)
       {
-        var line = sr.ReadLine();        
+        char nextChar = (char)sr.Read();
+        bool endOfWord = sentenceTerminatingCharacters.Contains(nextChar);
 
-        processLine(wordDict, line, lineNo);
+        if (!endOfWord)
+        {
+          sentence += nextChar;
 
-        lineNo++;
+        }
+        else
+        {
+          processLine(wordDict, sentence, lineNo);
+          sentence = "";
+        }
+
+        if (nextChar == '\n')
+          lineNo++;
+
       }
 
       sr.Close();
@@ -36,33 +48,26 @@ namespace WordFrequencyAnalyzer
       return wordDict;
     }
 
-    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n' };
+    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-' };
+    private static char[] sentenceTerminatingCharacters = {'.', '?', '!'};
     private Regex numberRegex = new Regex(@"\d+");
-    private Regex apostropheRegex = new Regex(@"([^'])+'[^']+");
-    
+    private Regex apostropheRegex = new Regex(@"([^\'])+\'[^\']+");
+
     private void processLine(Dictionary<string, WordInfo> wordDict, string line, int lineNo)
     {
       var words = line.Split(nonWordCharacters, StringSplitOptions.RemoveEmptyEntries);
       // TODO: Use full sentence as example instead of line
-      
+
       Array.ForEach(words, w => processWord(wordDict, w, line, lineNo));
     }
 
-    private string trimSentence(string line, string word)    {
+    private string trimSentence(string line)
+    {
       string sentence = line;
-
-      var indexOfWord = sentence.IndexOf(word);
-
-      if (indexOfWord > 0)
-      {
-        var lastIndexOfPrecedingPeriod = sentence.LastIndexOf('.', indexOfWord);
-        if (lastIndexOfPrecedingPeriod > -1)
-          sentence = sentence.Substring(lastIndexOfPrecedingPeriod + 1);
-      }
-
-      var indexOfSubsequentPeriod = sentence.IndexOf(".", word.Length);
-      if (indexOfSubsequentPeriod > -1)
-        sentence = sentence.Substring(0, indexOfSubsequentPeriod);
+      
+      sentence = sentence.Replace('\n', ' ');
+      sentence = sentence.Replace('\r', ' ');
+      sentence = sentence.Replace("  ", " ");
 
       return sentence;
     }
@@ -72,13 +77,14 @@ namespace WordFrequencyAnalyzer
       WordInfo wordInfo;
 
       string cleanWord = word.ToLower().Trim('\'');
+
       if (numberRegex.IsMatch(cleanWord) || apostropheRegex.IsMatch(cleanWord))
         return;
 
-      if (string.IsNullOrWhiteSpace(cleanWord))
+      if (string.IsNullOrWhiteSpace(cleanWord) || cleanWord.Length == 1)
         return;
 
-      var sentence = trimSentence(line, word);
+      var sentence = trimSentence(line);
 
       if (wordDict.TryGetValue(cleanWord, out wordInfo))
       {
@@ -93,7 +99,7 @@ namespace WordFrequencyAnalyzer
           Count = 1
         };
 
-        
+
         wordInfo.Examples.Details.Add(new Example() { Sentence = sentence, LineNo = lineNo });
 
         wordDict.Add(cleanWord, wordInfo);
