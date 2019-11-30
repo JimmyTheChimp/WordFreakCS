@@ -31,14 +31,14 @@ namespace WordFrequencyAnalyzer
       if (wordInfo.OtherForms.Details.Any())
       {
         firstLine += "(";
-        wordInfo.OtherForms.Details.ToList().ForEach(o => firstLine += o + ",");
+        wordInfo.OtherForms.Details.ToList().ForEach(o => firstLine += ((OtherForm)o).Form + ",");
         firstLine = firstLine.TrimEnd(',');
         firstLine += ")";
       }
 
       int maxExample = Math.Min(5, wordInfo.Examples.Details.Count);
       for (int i = 0; i < maxExample; i++)
-        firstLine += "\r\n            " + wordInfo.Examples.Details.ElementAt(i);
+        firstLine += "\r\n            " + ((Example)wordInfo.Examples.Details.ElementAt(i)).Sentence;
 
       return firstLine;
     }

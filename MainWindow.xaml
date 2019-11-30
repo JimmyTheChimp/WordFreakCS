@@ -22,7 +22,10 @@
       </TabItem>
       <TabItem Header="Results">
         <Grid Background="#FFE5E5E5">
-          <TreeView x:Name="tvResults" HorizontalAlignment="Left" Height="305" Margin="32,115,0,0" VerticalAlignment="Top" Width="581">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <TreeView x:Name="tvResults" HorizontalAlignment="Left" Height="351" Margin="45,56,0,0" VerticalAlignment="Top" Width="581">
             <TreeView.Resources>
               <HierarchicalDataTemplate DataType="{x:Type local:WordInfo}" ItemsSource="{Binding Details}">
                 <StackPanel Orientation="Horizontal">
@@ -41,7 +44,7 @@
                 <StackPanel Orientation="Horizontal">
                   <TextBlock Text="{Binding Sentence}"></TextBlock>
                   <TextBlock Text="(line "></TextBlock>
-                  <TextBlock Text="{Binding Sentence}"></TextBlock>
+                  <TextBlock Text="{Binding LineNo}"></TextBlock>
                   <TextBlock Text=")"></TextBlock>
                 </StackPanel>
               </DataTemplate>
@@ -50,6 +53,8 @@
               </DataTemplate>
             </TreeView.Resources>
           </TreeView>
+          <Label x:Name="label" Content="Word count:" HorizontalAlignment="Left" Margin="45,30,0,0" VerticalAlignment="Top"/>
+          <TextBlock x:Name="txtWordCount" HorizontalAlignment="Left" Margin="125,35,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
 
         </Grid>
       </TabItem>

@@ -97,6 +97,7 @@ namespace WordFrequencyAnalyzer
       }
 
       tvResults.ItemsSource = filteredResults.Values.OrderByDescending(r => r.Count);
+      txtWordCount.Text = filteredResults.Count.ToString();
       tcTabs.SelectedIndex = 1;
 
 
