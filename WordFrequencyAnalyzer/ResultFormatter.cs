@@ -27,7 +27,8 @@ namespace WordFrequencyAnalyzer
 
     private string formatWord(WordInfo wordInfo)
     {
-      var firstLine = $"{wordInfo.Count,10}: {wordInfo.Word}";
+      var verifiedSign = wordInfo.Verified ? "*" : "";
+      var firstLine = $"{wordInfo.Count,10}: {wordInfo.Word} {verifiedSign}";
       if (wordInfo.OtherForms.Details.Any())
       {
         firstLine += "(";

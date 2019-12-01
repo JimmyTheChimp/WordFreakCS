@@ -145,46 +145,97 @@ namespace WordFrequencyAnalyzer
 
     }
 
-    internal static Regex patternMAK = new Regex(@"(..+?)m[ae]k?$");
+    public class PatternAndReplace
+    {
+      public Regex Pattern { get; set; }
+      public string Replace { get; set; }
+    }
+
+
+
+    public static Regex patternMAK = new Regex(@"(..+?)m[ae]k?$");
 
     //internal static Regex patternI = new Regex(@"(.+?[^dtkl])[yns]?[iıuü]$");
-    internal static Regex patternI = new Regex(@"(.+?[^dtkl])[ys]?[iıuü]$");
-    internal static Regex patternE = new Regex(@"(..+?i)ne$|(..+?ı)na|(.+?[^c])y?[ea]$");
-    internal static Regex patternDEN = new Regex(@"(..+?)[yn]?[td][ea]n$");
-    internal static Regex patternDE = new Regex(@"(..+?)[yn]?[td][ea]$");
-    internal static Regex patternLER = new Regex(@"(..+?)ler(ce)?|lar(ca)?$");
+    public static Regex patternI = new Regex(@"(.+?[^dtkl])[ys]?[iıuü]$");
+    //public static Regex patternE = new Regex(@"(..+?i)ne$|(..+?ı)na|(.+?[^c])y?[ea]$");
+    public static Regex patternE = new Regex(@"(..+?)[ea]$");
+    public static Regex patternYE = new Regex(@"(.+?[^c])y[ea]$");
+    public static Regex patternNE = new Regex(@"(..+?i)ne$|(..+?ı)na$");
+    public static Regex patternDEN = new Regex(@"(..+?)[yn]?[td][ea]n$");
+    public static Regex patternDE = new Regex(@"(..+?)[yn]?[td][ea]$");
+    public static Regex patternLER = new Regex(@"(..+?)ler(ce)?|lar(ca)?$");
+    public static Regex patternDI = new Regex(@"(..+?)([dt][iıuü][mnk]?|[dt]iniz|[dt]ınız|[dt]unuz|[dt]ünüz)$");
 
-    internal static Regex patternKI = new Regex(@"(..+?)ki$");
-    internal static Regex patternIKEN = new Regex(@"(..+?)[y]?ken$");
-    internal static Regex patternINCE = new Regex(@"(..+?)([eiöü]nc[e])|([aıou]nc[a])$");
-    internal static Regex patternIN = new Regex(@"(..+?)[n]?[iıüu]n$");
+    public static Regex patternKI = new Regex(@"(..+?)ki$");
+    public static Regex patternIKEN = new Regex(@"(..+?)[y]?ken$");
+    public static Regex patternINCE = new Regex(@"(..+?)([eiöü]nc[e])|([aıou]nc[a])$");
+    public static Regex patternIN = new Regex(@"(..+?)[n]?[iıüu]n$");
+    
+    public static Regex patternEREK = new Regex(@"(..+?)y?arak|erek$");
+    public static Regex patternILE = new Regex(@"(..+?)y?l[ea]$");
+    public static Regex patternEN = new Regex(@"(..+?)y?[ea]n$");
+    
+    public static Regex patternECEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|acak(sın(ız)?)?|eceğim(iz)?|acağım(ız)?)$");
+    public static Regex patternEBIL = new Regex(@"(..+?)y?[ea]bil$");
+    public static Regex patternMIS = new Regex(@"(..+?)m[iıuü]ş([iıuü]m|s[iıuü]n|siniz|sınız|sunuz|sünüz|[iıuü]z)?$");
+    public static Regex patternDI_MAK = new Regex(@"(..+?)([dt][ıu][mnk]?|[dt]ınız|[dt]unuz)$");
+    public static Regex patternDI_MEK = new Regex(@"(..+?)([dt][iü][mnk]?|[dt]iniz|[dt]ünüz)$");
 
-    internal static Regex patternEREK = new Regex(@"(..+?)y?arak|erek$");
-    internal static Regex patternILE = new Regex(@"(..+?)y?l[ea]$");
-    internal static Regex patternEN = new Regex(@"(..+?)y?[ea]n$");
+    public static Regex patternIYOR = new Regex(@"(..+?)m?[iüıu]yor$");
+    public static Regex patternDIK = new Regex(@"(..+?)[dt](iği[mn]?|ığı[mn]?|üğü[mn]?|uğu[mn]?|iği[mn]iz|ığı[mn]ız|üğü[mn]üz|uğu[mn]uz)$");
+    public static Regex patternIP = new Regex(@"(..+?)[iıuü]p$");
 
-    internal static Regex patternECEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|acak(sın(ız)?)?|eceğim(iz)?|acağım(ız)?)$");
-    internal static Regex patternEBIL = new Regex(@"(..+?)y?[ea]bil$");
-    internal static Regex patternMIS = new Regex(@"(..+?)m[iıuü]ş([iıuü]m|s[iıuü]n|siniz|sınız|sunuz|sünüz|[iıuü]z)?$");
-    internal static Regex patternDI = new Regex(@"(..+?)([dt][iıuü][mnk]?|[dt]iniz|[dt]ınız|[dt]unuz|[dt]ünüz)$");
-    internal static Regex patternIYOR = new Regex(@"(..+?)m?[iüıu]yor$");
-    internal static Regex patternDIK = new Regex(@"(..+?)[dt](iği[mn]?|ığı[mn]?|üğü[mn]?|uğu[mn]?|iği[mn]iz|ığı[mn]ız|üğü[mn]üz|uğu[mn]uz)$");
-    internal static Regex patternIP = new Regex(@"(..+?)[iıuü]p$");
-
-    internal static Regex patternGENIS = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|ar(ı[mz]|lar|sın(ız)?)?|mez((sin(iz)?)|ler)?|mem(iz)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
+    public static Regex patternGENIS = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|ar(ı[mz]|lar|sın(ız)?)?|mez((sin(iz)?)|ler)?|mem(iz)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
     //internal static Regex patternGENIS = new Regex(@"(..+?)(mez|maz)$");
 
-    internal static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
-    internal const string replaceG = "k";
+    public static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
+    public const string replaceG = "k";
+    
+    public static Regex patternReplaceB = new Regex(@"(..+?)b$");
+    public const string replaceB = "p";
+    
+    public static Regex patternReplaceC = new Regex(@"(..+?)c$");
+    public const string replaceC = "ç";
+    
+    public static Regex patternReplaceD = new Regex(@"()..+?d$");
+    public static string replaceD = "t";
 
-    internal static Regex patternReplaceB = new Regex(@"(..+?)b$");
-    internal const string replaceB = "p";
+    public static PatternAndReplace[] IsimPatterns = new PatternAndReplace[]
+{
+      new PatternAndReplace(){ Pattern = patternI, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternDEN, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternDE, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternE, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternYE, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternNE, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternLER, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternILE, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternIN, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternKI, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternIKEN, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternMIS, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternDI, Replace = ""},
+      new PatternAndReplace() {Pattern = patternReplaceG, Replace = replaceG },
+      new PatternAndReplace() {Pattern = patternReplaceC, Replace = replaceC },
+      new PatternAndReplace() {Pattern = patternReplaceB, Replace = replaceB },
+      new PatternAndReplace() {Pattern = patternReplaceD, Replace = replaceD }
+};
 
-    internal static Regex patternReplaceC = new Regex(@"(..+?)c$");
-    internal const string replaceC = "ç";
-
-    internal static Regex patternReplaceD = new Regex(@"()..+?d$");
-    internal static string replaceD = "t";
+    public static PatternAndReplace[] EylemPatterns = new PatternAndReplace[]
+    {
+      new PatternAndReplace(){ Pattern = patternIYOR, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternGENIS, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternEREK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternIKEN, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternEN, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternECEK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternEBIL, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternMIS, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternDI_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternDI_MEK, Replace = "mek"},
+      new PatternAndReplace(){ Pattern = patternIP, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternDIK, Replace = "mak"}
+    };
 
     private string rule(Regex pattern, Dictionary<string, WordInfo> wordDict, string word)
     {
@@ -372,7 +423,7 @@ namespace WordFrequencyAnalyzer
       return word.Substring(0, word.Length - 2);
     }
 
-    private void combineWord(Dictionary<string, WordInfo> wordDict, string from, string to)
+    internal void combineWord(Dictionary<string, WordInfo> wordDict, string from, string to)
     {
       var fromInfo = wordDict[from];
       var toInfo = wordDict[to];

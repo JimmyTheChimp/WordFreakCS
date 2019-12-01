@@ -131,6 +131,7 @@ namespace WordFrequencyAnalyzer.Tests
       Assert.AreEqual(expectedResult, result);
     }
 
+    [Ignore("OBE")]
     [TestCase("dükkânlarının", "dükkân")]
     [TestCase("dükkânı","dükkân")]
     [TestCase("dükkâna", "dükkân")]

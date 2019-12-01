@@ -60,10 +60,12 @@
     <Compile Include="KnownWordsFilter.cs" />
     <Compile Include="OtherForm.cs" />
     <Compile Include="ResultFormatter.cs" />
+    <Compile Include="VerifiedWordsReader.cs" />
     <Compile Include="WordCombiner.cs" />
     <Compile Include="IWordDetail.cs" />
     <Compile Include="WordDetailCollection.cs" />
     <Compile Include="WordInfo.cs" />
+    <Compile Include="WordVerifier.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
