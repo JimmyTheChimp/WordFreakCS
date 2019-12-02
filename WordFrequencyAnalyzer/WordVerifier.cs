@@ -56,14 +56,14 @@ namespace WordFrequencyAnalyzer
       if (verifiedWords.Contains(word))
         return word;
 
-      var verifiedIsim = verifyWordIsim(verifiedWords, word);
-
-      if (verifiedIsim != null)
-        return verifiedIsim;
-
       var verifiedEylem = verifyWordEylem(verifiedWords, word);
 
-      return verifiedEylem;
+      if (verifiedEylem != null)
+        return verifiedEylem;
+
+      var verifiedIsim = verifyWordIsim(verifiedWords, word);
+
+      return verifiedIsim;
     }
 
     private string verifyWordIsim(HashSet<string> verifiedWords, string isim)

@@ -92,5 +92,49 @@ namespace WordFrequencyAnalyzer.Tests
       Assert.AreEqual(1, wordDict["görmek"].Count);
     }
 
+    [Test]
+    public void Yuz()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("yüz");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("yüzü", new WordInfo() { Count = 1, Word = "yüzü" });
+      wordDict.Add("yüzüne", new WordInfo() { Count = 1, Word = "yüzüne" });
+      wordDict.Add("yüzlerine", new WordInfo() { Count = 1, Word = "yüzlerine" });
+      wordDict.Add("yüzünden", new WordInfo() { Count = 1, Word = "yüzünden" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(4, wordDict["yüz"].Count);
+    }
+
+    [Test]
+    public void Istiyordu()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("istemek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("istiyor", new WordInfo() { Count = 1, Word = "istiyor" });
+      wordDict.Add("istiyorsunuz", new WordInfo() { Count = 1, Word = "istiyorsunuz" });
+      wordDict.Add("istedim", new WordInfo() { Count = 1, Word = "istedim" });
+      wordDict.Add("istiyordu", new WordInfo() { Count = 1, Word = "istiyordu" });
+      wordDict.Add("istiyormuşsun", new WordInfo() { Count = 1, Word = "istiyormuşsun" });
+      wordDict.Add("istemiyorsun", new WordInfo() { Count = 1, Word = "istemiyorsun" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(6, wordDict["istemek"].Count);
+    }
+
   }
 }
