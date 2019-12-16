@@ -136,5 +136,66 @@ namespace WordFrequencyAnalyzer.Tests
       Assert.AreEqual(6, wordDict["istemek"].Count);
     }
 
+    [Test]
+    public void Ediyordu()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("etmek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("ediyorum", new WordInfo() { Count = 1, Word = "ediyorum" });
+      wordDict.Add("ediyordular", new WordInfo() { Count = 1, Word = "ediyordular" });
+      wordDict.Add("ediyormuşsunuz", new WordInfo() { Count = 1, Word = "ediyormuşsunuz" });
+      wordDict.Add("ederim", new WordInfo() { Count = 1, Word = "ederim" });
+      wordDict.Add("etmez", new WordInfo() { Count = 1, Word = "etmez" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(5, wordDict["etmek"].Count);
+    }
+
+    // haline, babasına, gunden
+
+    [Test]
+    public void Hal()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("hal");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("haline", new WordInfo() { Count = 1, Word = "haline" });
+      wordDict.Add("halde", new WordInfo() { Count = 1, Word = "halde" });
+      wordDict.Add("halinde", new WordInfo() { Count = 1, Word = "halinde" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(3, wordDict["hal"].Count);
+    }
+
+    [Test]
+    public void Gunden()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("gün");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("günden", new WordInfo() { Count = 1, Word = "günden" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(1, wordDict["gün"].Count);
+    }
   }
 }

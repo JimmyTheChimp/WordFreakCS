@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -84,7 +85,7 @@ namespace WordFrequencyAnalyzer
 
       foreach (var patternAndReplace in WordCombiner.IsimPatterns)
       {
-        newIsim = verifyWordPattern(verifiedWords, patternAndReplace, isim);
+        newIsim = verifyWordPattern(verifiedWords, patternAndReplace, isim, verifyWordIsim);
 
         if (newIsim != null)
           return newIsim;
@@ -153,7 +154,7 @@ namespace WordFrequencyAnalyzer
       
       foreach (var patternAndReplace in WordCombiner.EylemPatterns)
       {
-        newEylem = verifyWordPattern(verifiedWords, patternAndReplace, eylem);
+        newEylem = verifyWordPattern(verifiedWords, patternAndReplace, eylem, verifyWordEylem);
 
         if (newEylem != null)
           return newEylem;
@@ -211,7 +212,7 @@ namespace WordFrequencyAnalyzer
       //return newEylem;
     }
 
-    private string verifyWordPattern(HashSet<string> verifiedWords, WordCombiner.PatternAndReplace patternAndReplace, string word)
+    private string verifyWordPattern(HashSet<string> verifiedWords, WordCombiner.PatternAndReplace patternAndReplace, string word, Func<HashSet<string>, string, string> recurseFunc)
     {
       var pattern = patternAndReplace.Pattern;
       var replacement = patternAndReplace.Replace;
@@ -223,7 +224,7 @@ namespace WordFrequencyAnalyzer
         if (verifiedWords.Contains(newWord))
           return newWord;
 
-        var baseWord = verifyWordIsim(verifiedWords, newWord);
+        var baseWord = recurseFunc(verifiedWords, newWord);
 
         return baseWord;
       }
