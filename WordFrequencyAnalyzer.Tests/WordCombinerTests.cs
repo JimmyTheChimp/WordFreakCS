@@ -126,7 +126,7 @@ namespace WordFrequencyAnalyzer.Tests
     public void BaseRuleI(string word, string expectedResult)
     {
       WordCombiner combiner = new WordCombiner();
-      var result = combiner.baseRule(WordCombiner.patternI, word);
+      var result = combiner.baseRule(WordCombiner.patternySYN_I, word);
 
       Assert.AreEqual(expectedResult, result);
     }

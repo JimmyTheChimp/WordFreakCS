@@ -179,15 +179,27 @@ namespace WordFrequencyAnalyzer
     public static Regex patternINCE_MEK = new Regex(@"(..+?)([eiöü]nc[e])$");
     public static Regex patternIN = new Regex(@"(..+?)[n]?[iıüu]n$");
     
+    public static Regex patternPOSESSIVE_UNSUZ = new Regex(@"(.+?[bcçdfghjklmnprsştvz])((u(m|n)(uz)?)|(ü(m|n)(üz)?)|(i(m|n)(iz)?)|(ı(m|n)(ız)?))$");
+    public static Regex patternPOSESSIVE_UNLU = new Regex(@"(.+?[aeiıoöuü])(m|n|m(u|ü|i|ı)z|n(u|ü|i|ı)z)$");
+
+    public static Regex patternBE_UNSUZ = new Regex(@"(.+?[bcçdfghjklmnprsştvz])((u|ü|i|ı)m|(u|ü|i|ı)z|s(u|ü|i|ı)n|sunuz|sünüz|sınız|sünüz)$");
+    public static Regex patternBE_UNLU = new Regex(@"(.+?[aeiıoöuü])(y(u|ü|i|ı)m|y(u|ü|i|ı)z|s(u|ü|i|ı)n|sunuz|sünüz|sınız|sünüz)$");
+
     public static Regex patternEREK = new Regex(@"(..+?)y?arak|erek$");
-    public static Regex patternEREK_MAK = new Regex(@"(..+?)y?arak$");
-    public static Regex patternEREK_MEK = new Regex(@"(..+?)y?erek$");
+    public static Regex patternEREK_MAK = new Regex(@"(..+?)(y|may)?arak$");
+    public static Regex patternEREK_MEK = new Regex(@"(..+?)(y|mey)?erek$");
     public static Regex patternILE = new Regex(@"(..+?)y?l[ea]$");
     public static Regex patternEN = new Regex(@"(..+?)y?[ea]n$");
     public static Regex patternEN_MAK = new Regex(@"(..+?)y?an$");
     public static Regex patternEN_MEK = new Regex(@"(..+?)y?en$");
 
     public static Regex patternECEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|acak(sın(ız)?)?|eceğim(iz)?|acağım(ız)?)$");
+    public static Regex patternECEK_MAK = new Regex(@"(..+?)y?(acak(sın(ız)?)?|acağım(ız)?)$");
+    public static Regex patternECEK_MEK = new Regex(@"(..+?)y?(ecek(sin(iz)?)?|eceğim(iz)?)$");
+
+    public static Regex patternERKEN_MEK = new Regex(@"(..+?)(e|i|ü)rken$");
+    public static Regex patternERKEN_MAK = new Regex(@"(..+?)(a|ı|u)rken$");
+
     public static Regex patternEBIL = new Regex(@"(..+?)y?[ea]bil$");
     public static Regex patternMIS = new Regex(@"(..+?)m[iıuü]ş([iıuü]m|s[iıuü]n|siniz|sınız|sunuz|sünüz|[iıuü]z)?$");
     public static Regex patternDI_MAK = new Regex(@"(..+?)([dt][ıu][mnk]?|[dt]ınız|[dt]unuz)$");
@@ -222,8 +234,14 @@ namespace WordFrequencyAnalyzer
 
     public static Regex patternGENIS = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|ar(ı[mz]|lar|sın(ız)?)?|mez((sin(iz)?)|ler)?|mem(iz)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
     //internal static Regex patternGENIS = new Regex(@"(..+?)(mez|maz)$");
-    public static Regex patternGENIS_MAK = new Regex(@"(..+?)(ar(ı[mz]|lar|sın(ız)?)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
-    public static Regex patternGENIS_MEK = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|mez((sin(iz)?)|ler)?|mem(iz)?)$");
+    
+    public static Regex patternGENIS_MAK = new Regex(@"(..+?)(ar(ı[mz]|lar(sa)?|sın(ız)?)?|(arsa)(m|n|k|nız)?|maz((sın(ız)?)|lar(sa)?|sa(m|n|k|nız)?|)?|mam(ız)?)$");
+    public static Regex patternGENIS_MEK = new Regex(@"(..+?)(er(i[mz]|ler(se)?|sin(iz)?)?|(erse)(m|n|k|niz)?|mez((sin(iz)?)|ler(se)?|se(m|n|k|niz)?|)?|mem(iz)?)$");
+    public static Regex patternGENIS_EMEK = new Regex(@"(..+?)(er(i[mz]|ler(se)?|sin(iz)?)?|(erse)(m|n|k|niz)?|emez((sin(iz)?)|ler(se)?|se(m|n|k|niz)?|)?|emem(iz)?)$");
+    public static Regex patternGENIS_AMAK = new Regex(@"(..+?)(ar(ı[mz]|lar(sa)?|sın(ız)?)?|(arsa)(m|n|k|nız)?|amaz((sın(ız)?)|lar(sa)?|sa(m|n|k|nız)?|)?|amam(ız)?)$");
+
+    public static Regex patternSIN_MEK = new Regex(@"(..+?)(sin|sün|siniz|sünüz|mesin|mesiniz)$");
+    public static Regex patternSIN_MAK = new Regex(@"(..+?)(sın|sun|sınız|sunuz|masın|masınız)$");
 
     public static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
     public const string replaceG = "k";
@@ -259,6 +277,10 @@ namespace WordFrequencyAnalyzer
       new PatternAndReplace(){ Pattern = patternMA, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternDIK_MEK, Replace = "mek"},
       new PatternAndReplace(){ Pattern = patternDIK_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternPOSESSIVE_UNLU, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternPOSESSIVE_UNSUZ, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternBE_UNLU, Replace = ""},
+      new PatternAndReplace(){ Pattern = patternBE_UNSUZ, Replace = ""},
       new PatternAndReplace() {Pattern = patternReplaceG, Replace = replaceG },
       new PatternAndReplace() {Pattern = patternReplaceC, Replace = replaceC },
       new PatternAndReplace() {Pattern = patternReplaceB, Replace = replaceB },
@@ -282,14 +304,17 @@ namespace WordFrequencyAnalyzer
       new PatternAndReplace(){ Pattern = patternIYORMUS_AMAK, Replace = "amak"},
       new PatternAndReplace(){ Pattern = patternIYORMUS_EMEK, Replace = "emek"},
 
-      new PatternAndReplace(){ Pattern = patternGENIS_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternGENIS_MAK, Replace = "amak"},
+      new PatternAndReplace(){ Pattern = patternGENIS_AMAK, Replace = "amak"},
       new PatternAndReplace(){ Pattern = patternGENIS_MEK, Replace = "mek"},
+      new PatternAndReplace(){ Pattern = patternGENIS_EMEK, Replace = "emek"},
+
 
       new PatternAndReplace(){ Pattern = patternEREK_MAK, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternEREK_MEK, Replace = "mek"},
 
-      new PatternAndReplace(){ Pattern = patternIKEN, Replace = "mak"},
-      
+      new PatternAndReplace(){ Pattern = patternERKEN_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternERKEN_MEK, Replace = "mek"},
 
       new PatternAndReplace(){ Pattern = patternINCE_MAK, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternINCE_MEK, Replace = "mek"},
@@ -297,7 +322,9 @@ namespace WordFrequencyAnalyzer
       new PatternAndReplace(){ Pattern = patternEN_MAK, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternEN_MEK, Replace = "mek"},
 
-      new PatternAndReplace(){ Pattern = patternECEK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternECEK_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternECEK_MEK, Replace = "mek"},
+
       new PatternAndReplace(){ Pattern = patternEBIL, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternMIS, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternDI_MAK, Replace = "mak"},
@@ -305,7 +332,10 @@ namespace WordFrequencyAnalyzer
 
       new PatternAndReplace(){ Pattern = patternIP_MAK, Replace = "mak"},
       new PatternAndReplace(){ Pattern = patternIP_MEK, Replace = "mek"},
-      
+
+      new PatternAndReplace(){ Pattern = patternSIN_MAK, Replace = "mak"},
+      new PatternAndReplace(){ Pattern = patternSIN_MEK, Replace = "mek"},
+
       new PatternAndReplace(){ Pattern = patternEDMEK, Replace = "etmek" },
       new PatternAndReplace(){ Pattern = patternAMAMAK, Replace = "mak" },
       new PatternAndReplace(){ Pattern = patternEMEMEK, Replace = "mek" }

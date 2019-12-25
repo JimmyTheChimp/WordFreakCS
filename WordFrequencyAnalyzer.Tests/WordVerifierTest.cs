@@ -35,7 +35,7 @@ namespace WordFrequencyAnalyzer.Tests
 
     }
 
-        [Test]
+    [Test]
     public void Yapmak()
     {
       var verifier = new WordVerifier();
@@ -220,5 +220,150 @@ namespace WordFrequencyAnalyzer.Tests
 
       Assert.AreEqual(4, wordDict["gelmek"].Count);
     }
+
+    //azizim
+    [Test]
+    public void Azizim_Aziz()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("aziz");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("azizim", new WordInfo() { Count = 1, Word = "azizim" });
+      wordDict.Add("azizsin", new WordInfo() { Count = 1, Word = "azizsin" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(2, wordDict["aziz"].Count);
+    }
+
+    //versin
+    [Test]
+    public void Versin_Vermek()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("vermek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("versin", new WordInfo() { Count = 1, Word = "versin" });
+      wordDict.Add("vermesin", new WordInfo() { Count = 1, Word = "vermesin" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(2, wordDict["vermek"].Count);
+    }
+
+    
+    //olmayarak
+    [Test]
+    public void Olmayarak_Olmak()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("olmak");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("olarak", new WordInfo() { Count = 1, Word = "olarak" });
+      wordDict.Add("olmayarak", new WordInfo() { Count = 1, Word = "olmayarak" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(2, wordDict["olmak"].Count);
+    }
+
+    
+    //konusurken
+    [Test]
+    public void Konusurken_Konusmak()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("konuşmak");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("konuşurken", new WordInfo() { Count = 1, Word = "konuşurken" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(1, wordDict["konuşmak"].Count);
+    }
+
+    //denecek
+    [Test]
+    public void Denecek_Denmek()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("denmek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("denecek", new WordInfo() { Count = 1, Word = "denecek" });
+      wordDict.Add("deneceksin", new WordInfo() { Count = 1, Word = "deneceksin" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(2, wordDict["denmek"].Count);
+    }
+
+    //isterseniz
+    [Test]
+    public void Isterseniz_Istemek()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("istemek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("isterseniz", new WordInfo() { Count = 1, Word = "isterseniz" });
+      wordDict.Add("istersek", new WordInfo() { Count = 1, Word = "istersek" });
+      wordDict.Add("istemezsen", new WordInfo() { Count = 1, Word = "istemezsen" });
+      wordDict.Add("isterlerse", new WordInfo() { Count = 1, Word = "isterlerse" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(4, wordDict["istemek"].Count);
+    }
+
+    //bilmemek
+    [Test]
+    public void Bilmemek_Bilmek()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("bilmek");
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("bilmeyen", new WordInfo() { Count = 1, Word = "bilmeyen" });
+      wordDict.Add("bilmediğim", new WordInfo() { Count = 1, Word = "bilmediğim" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(2, wordDict["bilmek"].Count);
+    }
+
+
   }
 }
