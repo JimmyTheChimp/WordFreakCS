@@ -197,5 +197,28 @@ namespace WordFrequencyAnalyzer.Tests
 
       Assert.AreEqual(1, wordDict["gün"].Count);
     }
+
+    [Test]
+    public void GelmeGelmek()
+    {
+      var verifier = new WordVerifier();
+
+      var verifiedWords = new HashSet<string>();
+      verifiedWords.Add("gelmek");
+      verifiedWords.Add("gelme");
+
+
+      var knownWords = new HashSet<string>();
+
+      var wordDict = new Dictionary<string, WordInfo>();
+      wordDict.Add("gelmedim", new WordInfo() { Count = 1, Word = "gelmedim" });
+      wordDict.Add("gelmediği", new WordInfo() { Count = 1, Word = "gelmediği" });
+      wordDict.Add("geldim", new WordInfo() { Count = 1, Word = "geldim" });
+      wordDict.Add("geldiği", new WordInfo() { Count = 1, Word = "geldiği" });
+
+      verifier.CombineToVerifiedWords(verifiedWords, knownWords, wordDict);
+
+      Assert.AreEqual(4, wordDict["gelmek"].Count);
+    }
   }
 }

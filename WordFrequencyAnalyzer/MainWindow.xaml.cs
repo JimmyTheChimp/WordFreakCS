@@ -32,7 +32,7 @@ namespace WordFrequencyAnalyzer
 
       _verifiedWordsReader = new VerifiedWordsReader();
       _wordCombiner = new WordCombiner();
-      _wordVerifier = new WordVerifier();      
+      _wordVerifier = new WordVerifier();
 
       loadSettings();
     }
@@ -106,6 +106,12 @@ namespace WordFrequencyAnalyzer
 
       // Read dictionary
       var verifiedWords = _verifiedWordsReader.ReadVerifiedWords(dictionaryFileInfo.OpenRead());
+
+      foreach (var knownWord in knownWords)
+      {
+        if (!verifiedWords.Contains(knownWord))
+          verifiedWords.Add(knownWord);
+      }
 
       // Remove known words before combining
       var preFilteredResults = filter.Filter(knownWords, results);

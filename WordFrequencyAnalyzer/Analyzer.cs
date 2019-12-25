@@ -48,7 +48,7 @@ namespace WordFrequencyAnalyzer
       return wordDict;
     }
 
-    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-' };
+    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-', '“', '”' };
     private static char[] sentenceTerminatingCharacters = {'.', '?', '!'};
     private Regex numberRegex = new Regex(@"\d+");
     private Regex apostropheRegex = new Regex(@"([^\'])+\'[^\']+");

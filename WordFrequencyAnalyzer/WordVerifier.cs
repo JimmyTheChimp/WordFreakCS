@@ -29,7 +29,7 @@ namespace WordFrequencyAnalyzer
         if (verifiedWord != null)
         {
           if (!wordDict.ContainsKey(verifiedWord))
-            wordDict.Add(verifiedWord, new WordInfo() {Word = verifiedWord, Count = 0, Verified = true});
+            wordDict.Add(verifiedWord, new WordInfo() { Word = verifiedWord, Count = 0, Verified = true });
           else
             wordDict[verifiedWord].Verified = true;
 
@@ -88,7 +88,14 @@ namespace WordFrequencyAnalyzer
         newIsim = verifyWordPattern(verifiedWords, patternAndReplace, isim, verifyWordIsim);
 
         if (newIsim != null)
+        {
+          if (newIsim.EndsWith("me") && verifiedWords.Contains(newIsim.Replace("me", "mek")))
+            return newIsim.Replace("me", "mek");
+          if (newIsim.EndsWith("ma") && verifiedWords.Contains(newIsim.Replace("ma", "mak")))
+            return newIsim.Replace("ma", "mak");
+
           return newIsim;
+        }
       }
 
       return null;
@@ -151,7 +158,7 @@ namespace WordFrequencyAnalyzer
     private string verifyWordEylem(HashSet<string> verifiedWords, string eylem)
     {
       string newEylem = null;
-      
+
       foreach (var patternAndReplace in WordCombiner.EylemPatterns)
       {
         newEylem = verifyWordPattern(verifiedWords, patternAndReplace, eylem, verifyWordEylem);
