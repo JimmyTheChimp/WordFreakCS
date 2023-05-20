@@ -25,6 +25,7 @@ namespace WordFrequencyAnalyzer
       Details = new ObservableCollection<WordDetailCollection>() { OtherForms, Examples };
     }
 
+    public bool Verified { get; set; } = false;
     public string Word { get; set; }
     public int Count { get; set; }
     public WordDetailCollection OtherForms { get; }

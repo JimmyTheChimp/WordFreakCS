@@ -2,18 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace WordFrequencyAnalyzer
 {
   public class Analyzer
   {
-    public Analyzer()
-    {
-    }
-
     public Dictionary<string, WordInfo> Analyze(FileStream fs)
     {
       var wordDict = new Dictionary<string, WordInfo>();
@@ -48,7 +42,7 @@ namespace WordFrequencyAnalyzer
       return wordDict;
     }
 
-    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-' };
+    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-', '“', '”' };
     private static char[] sentenceTerminatingCharacters = {'.', '?', '!'};
     private Regex numberRegex = new Regex(@"\d+");
     private Regex apostropheRegex = new Regex(@"([^\'])+\'[^\']+");

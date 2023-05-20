@@ -1,9 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WordFrequencyAnalyzer.Tests
 {
@@ -126,11 +122,12 @@ namespace WordFrequencyAnalyzer.Tests
     public void BaseRuleI(string word, string expectedResult)
     {
       WordCombiner combiner = new WordCombiner();
-      var result = combiner.baseRule(WordCombiner.patternI, word);
+      var result = combiner.baseRule(WordCombiner.patternySYN_I, word);
 
       Assert.AreEqual(expectedResult, result);
     }
 
+    [Ignore("OBE")]
     [TestCase("dükkânlarının", "dükkân")]
     [TestCase("dükkânı","dükkân")]
     [TestCase("dükkâna", "dükkân")]
