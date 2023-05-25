@@ -33,7 +33,8 @@ namespace WordFrequencyAnalyzer
           else
             wordDict[verifiedWord].Verified = true;
 
-          _wordCombiner.combineWord(wordDict, word, verifiedWord);
+          if (verifiedWord != word)
+            _wordCombiner.combineWord(wordDict, word, verifiedWord);
         }
       }
 

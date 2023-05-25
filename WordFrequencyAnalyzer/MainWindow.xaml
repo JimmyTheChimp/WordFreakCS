@@ -30,7 +30,9 @@
           <Grid.ColumnDefinitions>
             <ColumnDefinition/>
           </Grid.ColumnDefinitions>
-          <TreeView x:Name="tvResults" HorizontalAlignment="Left" Height="351" Margin="45,56,0,0" VerticalAlignment="Top" Width="581">
+          <TreeView x:Name="tvResults" HorizontalAlignment="Left" Height="351" Margin="45,56,0,0" VerticalAlignment="Top" Width="581"
+                    VirtualizingStackPanel.IsVirtualizing="True"
+                    VirtualizingStackPanel.VirtualizationMode="Recycling">
             <TreeView.Resources>
               <HierarchicalDataTemplate DataType="{x:Type local:WordInfo}" ItemsSource="{Binding Details}">
                 <StackPanel Orientation="Horizontal">

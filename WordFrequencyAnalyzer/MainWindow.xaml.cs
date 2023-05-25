@@ -26,6 +26,7 @@ namespace WordFrequencyAnalyzer
     private WordVerifier _wordVerifier;
 
 
+
     public MainWindow()
     {
       InitializeComponent();
@@ -105,13 +106,28 @@ namespace WordFrequencyAnalyzer
       }
 
       // Read dictionary
-      var verifiedWords = _verifiedWordsReader.ReadVerifiedWords(dictionaryFileInfo.OpenRead());
+     //var verifiedWords = _verifiedWordsReader.ReadVerifiedWords(dictionaryFileInfo.OpenRead());
+     var verifiedWords = new HashSet<string>();
 
+      // Run combiner on known words, to get only the root words
+      //_wordCombiner.CombineVerifiedWords(verifiedWords);
+
+      // TODO: Run combiner on known words?
+
+      // Add known words to verified words list
       foreach (var knownWord in knownWords)
       {
         if (!verifiedWords.Contains(knownWord))
           verifiedWords.Add(knownWord);
       }
+
+      //// TEMP: Add newly found words to verified words list
+      //foreach (var newWord in results)
+      //{
+      //  if (!verifiedWords.Contains(newWord.Key))
+      //    verifiedWords.Add(newWord.Key);
+      //}
+
 
       // Remove known words before combining
       var preFilteredResults = filter.Filter(knownWords, results);

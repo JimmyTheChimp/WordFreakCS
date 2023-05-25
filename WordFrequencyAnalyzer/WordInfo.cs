@@ -17,6 +17,12 @@ namespace WordFrequencyAnalyzer
         Details = new HashSet<IWordDetail>()
       };
 
+      PossibleForms = new WordDetailCollection()
+      {
+        Name = "Possible Forms",
+        Details = new HashSet<IWordDetail>()
+      };
+
       Examples = new WordDetailCollection() {
         Name = "Examples",
         Details = new List<IWordDetail>()
@@ -29,6 +35,7 @@ namespace WordFrequencyAnalyzer
     public string Word { get; set; }
     public int Count { get; set; }
     public WordDetailCollection OtherForms { get; }
+    public WordDetailCollection PossibleForms { get; }
     public WordDetailCollection Examples { get; }
 
     public ObservableCollection<WordDetailCollection> Details { get; }

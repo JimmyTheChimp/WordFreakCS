@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WordFrequencyAnalyzer.Tests
 {
@@ -172,6 +173,41 @@ namespace WordFrequencyAnalyzer.Tests
       var result = combiner.baseRule(WordCombiner.patternGENIS, word);
 
       Assert.AreEqual(expectedResult, result);
+    }
+
+    [Test]
+    public void CombineVerifiedWords()
+    {
+      WordCombiner combiner = new WordCombiner();
+
+      HashSet<string> verifiedWords = new HashSet<string>();
+
+      verifiedWords.Add("kol");
+      verifiedWords.Add("kolun");
+      verifiedWords.Add("kolundaki");
+
+      combiner.CombineVerifiedWords(verifiedWords);
+
+
+      Assert.AreEqual(1, verifiedWords.Count);
+      Assert.Contains("kol", verifiedWords.ToList());
+    }
+
+    [Test]
+    public void CombineVerifiedWords2()
+    {
+      WordCombiner combiner = new WordCombiner();
+
+      HashSet<string> verifiedWords = new HashSet<string>();
+      
+      verifiedWords.Add("kolunda");
+      verifiedWords.Add("kolundaki");
+
+      combiner.CombineVerifiedWords(verifiedWords);
+
+
+      Assert.AreEqual(1, verifiedWords.Count);
+      Assert.Contains("kolunda", verifiedWords.ToList());
     }
   }
 }
