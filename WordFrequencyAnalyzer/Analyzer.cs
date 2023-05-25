@@ -19,7 +19,7 @@ namespace WordFrequencyAnalyzer
       while (!sr.EndOfStream)
       {
         char nextChar = (char)sr.Read();
-        bool endOfWord = sentenceTerminatingCharacters.Contains(nextChar);
+        bool endOfWord = SentenceTerminatingCharacters.Contains(nextChar);
 
         if (!endOfWord)
         {
@@ -42,14 +42,14 @@ namespace WordFrequencyAnalyzer
       return wordDict;
     }
 
-    private static char[] nonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-', '“', '”' };
-    private static char[] sentenceTerminatingCharacters = {'.', '?', '!'};
-    private Regex numberRegex = new Regex(@"\d+");
-    private Regex apostropheRegex = new Regex(@"([^\'])+\'[^\']+");
+    private static readonly char[] NonWordCharacters = { ' ', '.', ',', ';', '?', '"', '!', '(', ')', '*', ':', '', '\r', '\n', '-', '“', '”', '[', ']' };
+    private static readonly char[] SentenceTerminatingCharacters = {'.', '?', '!'};
+    private readonly Regex _numberRegex = new Regex(@"\d+");
+    private readonly Regex _apostropheRegex = new Regex(@"([^\'])+\'[^\']+");
 
     private void processLine(Dictionary<string, WordInfo> wordDict, string line, int lineNo)
     {
-      var words = line.Split(nonWordCharacters, StringSplitOptions.RemoveEmptyEntries);
+      var words = line.Split(NonWordCharacters, StringSplitOptions.RemoveEmptyEntries);
       // TODO: Use full sentence as example instead of line
 
       Array.ForEach(words, w => processWord(wordDict, w, line, lineNo));
@@ -72,7 +72,7 @@ namespace WordFrequencyAnalyzer
 
       string cleanWord = word.ToLower().Trim('\'');
 
-      if (numberRegex.IsMatch(cleanWord) || apostropheRegex.IsMatch(cleanWord))
+      if (_numberRegex.IsMatch(cleanWord) || _apostropheRegex.IsMatch(cleanWord))
         return;
 
       if (string.IsNullOrWhiteSpace(cleanWord) || cleanWord.Length == 1)

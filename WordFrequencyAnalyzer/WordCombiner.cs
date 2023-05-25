@@ -30,15 +30,36 @@ namespace WordFrequencyAnalyzer
       {
         lastCount = wordDict.Count;
 
-        runRulesAll(wordDict, firstRun);
+        runRulesAll(wordDict);
         firstRun = false;
       } while (wordDict.Count < lastCount);
 
       return wordDict;
     }
 
+    public void CombineVerifiedWords(HashSet<string> verifiedWords)
+    {
+      HashSet<string> duplicatedWords = new HashSet<string>();
 
-    private void runRulesAll(Dictionary<string, WordInfo> wordDict, bool firstRun)
+      foreach (string word in verifiedWords)
+      {
+        var rootWord = runRulesSingle(null, word);
+        if (rootWord != null && rootWord != word && verifiedWords.Contains(rootWord))
+        {
+          System.Diagnostics.Debug.WriteLine("Rejecting duplicate: " + word + " for " + rootWord);
+          duplicatedWords.Add(word);
+        }
+      }
+
+      foreach (string dupe in duplicatedWords)
+      {
+
+        verifiedWords.Remove(dupe);
+      }
+    }
+
+
+    private void runRulesAll(Dictionary<string, WordInfo> wordDict)
     {
       var words = wordDict.Keys.OrderByDescending(k => k.Length).ToList();
 
@@ -47,7 +68,7 @@ namespace WordFrequencyAnalyzer
 
     internal string runRulesSingle(Dictionary<string, WordInfo> wordDict, string word)
     {
-      if (!wordDict.ContainsKey(word))
+      if (wordDict != null && !wordDict.ContainsKey(word))
         return word;
 
       var firstRulesWord = runFirstRules(wordDict, word);
@@ -162,7 +183,7 @@ namespace WordFrequencyAnalyzer
     public static Regex patternE = new Regex(@"(..+?)[ea]$");
     public static Regex patternYE = new Regex(@"(.+?[^c])y[ea]$");
     public static Regex patternNE = new Regex(@"(..+?i)ne$|(..+?ı)na$");
-    
+
     public static Regex patternDEN = new Regex(@"(..+?)[td][ea]n$");
     public static Regex patternNDEN = new Regex(@"(..+?)nd[ea]n$");
     public static Regex patternDE = new Regex(@"(..+?)[td][ea]$");
@@ -178,7 +199,7 @@ namespace WordFrequencyAnalyzer
     public static Regex patternINCE_MAK = new Regex(@"(..+?)([aıou]nc[a])$");
     public static Regex patternINCE_MEK = new Regex(@"(..+?)([eiöü]nc[e])$");
     public static Regex patternIN = new Regex(@"(..+?)[n]?[iıüu]n$");
-    
+
     public static Regex patternPOSESSIVE_UNSUZ = new Regex(@"(.+?[bcçdfghjklmnprsştvz])((u(m|n)(uz)?)|(ü(m|n)(üz)?)|(i(m|n)(iz)?)|(ı(m|n)(ız)?))$");
     public static Regex patternPOSESSIVE_UNLU = new Regex(@"(.+?[aeiıoöuü])(m|n|m(u|ü|i|ı)z|n(u|ü|i|ı)z)$");
 
@@ -234,7 +255,7 @@ namespace WordFrequencyAnalyzer
 
     public static Regex patternGENIS = new Regex(@"(..+?)(er(i[mz]|ler|sin(iz)?)?|ar(ı[mz]|lar|sın(ız)?)?|mez((sin(iz)?)|ler)?|mem(iz)?|maz((sın(ız)?)|lar)?|mam(ız)?)$");
     //internal static Regex patternGENIS = new Regex(@"(..+?)(mez|maz)$");
-    
+
     public static Regex patternGENIS_MAK = new Regex(@"(..+?)(ar(ı[mz]|lar(sa)?|sın(ız)?)?|(arsa)(m|n|k|nız)?|maz((sın(ız)?)|lar(sa)?|sa(m|n|k|nız)?|)?|mam(ız)?)$");
     public static Regex patternGENIS_MEK = new Regex(@"(..+?)(er(i[mz]|ler(se)?|sin(iz)?)?|(erse)(m|n|k|niz)?|mez((sin(iz)?)|ler(se)?|se(m|n|k|niz)?|)?|mem(iz)?)$");
     public static Regex patternGENIS_EMEK = new Regex(@"(..+?)(er(i[mz]|ler(se)?|sin(iz)?)?|(erse)(m|n|k|niz)?|emez((sin(iz)?)|ler(se)?|se(m|n|k|niz)?|)?|emem(iz)?)$");
@@ -245,13 +266,13 @@ namespace WordFrequencyAnalyzer
 
     public static Regex patternReplaceG = new Regex(@"(..+?)ğ$");
     public const string replaceG = "k";
-    
+
     public static Regex patternReplaceB = new Regex(@"(..+?)b$");
     public const string replaceB = "p";
-    
+
     public static Regex patternReplaceC = new Regex(@"(..+?)c$");
     public const string replaceC = "ç";
-    
+
     public static Regex patternReplaceD = new Regex(@"()..+?d$");
     public static string replaceD = "t";
 
@@ -349,12 +370,16 @@ namespace WordFrequencyAnalyzer
       {
         string baseWord = baseRule(pattern, word);
 
-        if (!wordDict.ContainsKey(baseWord))
+        if (wordDict != null)
         {
-          wordDict.Add(baseWord, new WordInfo() { Word = baseWord, Count = 0 });
+          if (!wordDict.ContainsKey(baseWord))
+          {
+            wordDict.Add(baseWord, new WordInfo() { Word = baseWord, Count = 0 });
+          }
+
+          combineWord(wordDict, word, baseWord);
         }
 
-        combineWord(wordDict, word, baseWord);
         return baseWord;
       }
 
@@ -377,12 +402,15 @@ namespace WordFrequencyAnalyzer
       {
         string baseWord = baseReplaceRule(pattern, replacement, word);
 
-        if (!wordDict.ContainsKey(baseWord))
+        if (wordDict != null)
         {
-          wordDict.Add(baseWord, new WordInfo() { Word = baseWord, Count = 0 });
-        }
+          if (!wordDict.ContainsKey(baseWord))
+          {
+            wordDict.Add(baseWord, new WordInfo() { Word = baseWord, Count = 0 });
+          }
 
-        combineWord(wordDict, word, baseWord);
+          combineWord(wordDict, word, baseWord);
+        }
 
         return baseWord;
       }
